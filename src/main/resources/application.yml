@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: sub_tech_challenge_seller_api_fase5
+  data:
+    mongodb:
+      uri: mongodb+srv://manager:manager@posfiap.hz8ggjd.mongodb.net
+      database: Vehicle
+
+vehicle:
+  url: "http://3.235.30.1:8080/api/vehicle"

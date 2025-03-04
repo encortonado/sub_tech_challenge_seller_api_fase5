@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:latest  # Imagem oficial do MongoDB
+    container_name: mongo_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: posfiap  # Nome de usuário
+      MONGO_INITDB_ROOT_PASSWORD: posfiap2  # Senha
+    ports:
+      - "27017:27017"  # Mapeamento da porta para acesso externo
+    volumes:
+      - mongo_data:/data/db  # Persistência de dados
+
+volumes:
+  mongo_data:
+    driver: local

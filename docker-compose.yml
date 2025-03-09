@@ -2,16 +2,30 @@ version: "3.8"
 
 services:
   mongo:
-    image: mongo:latest  # Imagem oficial do MongoDB
+    image: mongo:latest
     container_name: mongo_db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: posfiap  # Nome de usuário
-      MONGO_INITDB_ROOT_PASSWORD: posfiap2  # Senha
+      MONGO_INITDB_ROOT_USERNAME: posfiap
+      MONGO_INITDB_ROOT_PASSWORD: posfiap2
     ports:
-      - "27017:27017"  # Mapeamento da porta para acesso externo
+      - "27017:27017"
     volumes:
-      - mongo_data:/data/db  # Persistência de dados
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"  # Porta padrão para comunicação AMQP
+      - "15672:15672"  # Porta do painel de gerenciamento
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
   mongo_data:
+    driver: local
+  rabbitmq_data:
     driver: local

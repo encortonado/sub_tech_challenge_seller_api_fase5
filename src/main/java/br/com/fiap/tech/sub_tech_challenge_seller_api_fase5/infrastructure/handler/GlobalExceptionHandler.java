@@ -22,6 +22,9 @@ public class GlobalExceptionHandler {
             case "compra nao encontrada":
                 status = HttpStatus.NOT_FOUND;
                 break;
+            case "Veiculo está indisponivel":
+                status = HttpStatus.NOT_FOUND;
+                break;
             default:
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

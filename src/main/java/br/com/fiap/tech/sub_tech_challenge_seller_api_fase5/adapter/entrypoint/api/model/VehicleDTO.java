@@ -20,4 +20,6 @@ public class VehicleDTO {
     private int year;
 
     private double price;
+
+    private boolean isHold;
 }

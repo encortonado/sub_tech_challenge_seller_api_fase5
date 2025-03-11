@@ -1,6 +1,7 @@
 package br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.adapter.entrypoint.api.controller;
 
 import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.adapter.entrypoint.api.model.PurchaseDTO;
+import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.adapter.entrypoint.api.model.PurchaseEntityDTO;
 import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.application.purchase.entities.PurchaseEntity;
 import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.application.purchase.services.VehiclePurchaseService;
 import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.infrastructure.exceptions.CustomErrorTypeException;
@@ -57,7 +58,7 @@ class VehiclePurchaseControllerTest {
     @Test
     void listAllPurchases() throws Exception {
 
-        List<PurchaseEntity> vehicles = purchasesList();
+        List<PurchaseEntityDTO> vehicles = purchasesListDTO();
 
         when(vehiclePurchaseService.listSoldVehicles()).thenReturn(vehicles);
 
@@ -108,7 +109,7 @@ class VehiclePurchaseControllerTest {
     void shouldSellVehicle() throws Exception {
 
         PurchaseDTO purchaseDTO = new PurchaseDTO("123", 56);
-        PurchaseEntity purchaseEntity = purchasesList().get(0);
+        PurchaseEntityDTO purchaseEntity = purchasesListDTO().get(0);
         purchaseEntity.setId("789");
 
         when(vehiclePurchaseService.sellVehicle(purchaseDTO)).thenReturn(purchaseEntity);
@@ -145,6 +146,34 @@ class VehiclePurchaseControllerTest {
                 .build();
 
         var purchase3 = PurchaseEntity.builder()
+                .cpf("1112223334")
+                .purchaseDate(new Date())
+                .vehicleId(3)
+                .vehiclePrice(20000.0)
+                .isPaid(true)
+                .build();
+
+        return Arrays.asList(purchase1, purchase2, purchase3);
+    }
+
+    List<PurchaseEntityDTO> purchasesListDTO() {
+        var purchase1 = PurchaseEntityDTO.builder()
+                .cpf("1234567890")
+                .purchaseDate(new Date())
+                .vehicleId(1)
+                .vehiclePrice(50000.0)
+                .isPaid(true)
+                .build();
+
+        var purchase2 = PurchaseEntityDTO.builder()
+                .cpf("0987654321")
+                .purchaseDate(new Date())
+                .vehicleId(2)
+                .vehiclePrice(30000.0)
+                .isPaid(true)
+                .build();
+
+        var purchase3 = PurchaseEntityDTO.builder()
                 .cpf("1112223334")
                 .purchaseDate(new Date())
                 .vehicleId(3)

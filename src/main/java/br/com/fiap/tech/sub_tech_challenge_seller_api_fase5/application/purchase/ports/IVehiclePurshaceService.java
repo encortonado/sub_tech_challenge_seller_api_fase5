@@ -4,6 +4,7 @@ public interface IVehiclePurshaceService extends
     IListSoldvehicles,
     ISellVehicle,
     IProcessPayment,
-    IFindVehicle {
+    IFindVehicle,
+    IFindSale {
 
 }

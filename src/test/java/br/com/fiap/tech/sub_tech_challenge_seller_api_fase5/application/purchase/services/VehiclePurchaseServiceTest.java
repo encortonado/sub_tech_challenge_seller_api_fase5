@@ -1,6 +1,9 @@
 package br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.application.purchase.services;
 
+import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.adapter.entrypoint.api.model.PurchaseEntityDTO;
 import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.adapter.entrypoint.persistance.VehiclePurchaseRepository;
+import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.adapter.outbound.publisher.PaymentEventPublisher;
+import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.adapter.outbound.publisher.SaleEventPublisher;
 import br.com.fiap.tech.sub_tech_challenge_seller_api_fase5.application.purchase.entities.PurchaseEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +33,12 @@ class VehiclePurchaseServiceTest {
     @Mock
     private VehiclePurchaseRepository vehiclePurchaseRepository;
 
+    @Mock
+    private SaleEventPublisher saleEventPublisher;
+
+    @Mock
+    private PaymentEventPublisher paymentEventPublisher;
+
 
     @Mock
     private RestTemplate restTemplate;
@@ -38,7 +47,11 @@ class VehiclePurchaseServiceTest {
 
     @BeforeEach()
     void setup() {
-        vehiclePurchaseService = new VehiclePurchaseService(vehiclePurchaseRepository);
+        vehiclePurchaseService =
+                new VehiclePurchaseService(
+                        vehiclePurchaseRepository,
+                        saleEventPublisher,
+                        paymentEventPublisher);
     }
 
     @AfterEach
@@ -54,15 +67,17 @@ class VehiclePurchaseServiceTest {
 
         List<PurchaseEntity> list = purchasesList();
 
+        List<PurchaseEntityDTO> list2 = purchasesListDTO();
+
         when(vehiclePurchaseRepository.findAllByIsPaidIsTrueOrderByVehiclePriceDesc()).thenReturn(list);
 
-        List<PurchaseEntity> result = vehiclePurchaseService.listSoldVehicles();
+        List<PurchaseEntityDTO> result = vehiclePurchaseService.listSoldVehicles();
 
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()
                 .hasSize(3)
-                .containsExactly(list.get(0), list.get(1), list.get(2));
+                .containsExactly(list2.get(0), list2.get(1), list2.get(2));
 
         verify(vehiclePurchaseRepository, times(1)).findAllByIsPaidIsTrueOrderByVehiclePriceDesc();
     }
@@ -126,6 +141,34 @@ class VehiclePurchaseServiceTest {
                 .build();
 
         var purchase3 = PurchaseEntity.builder()
+                .cpf("1112223334")
+                .purchaseDate(new Date())
+                .vehicleId(3)
+                .vehiclePrice(20000.0)
+                .isPaid(true)
+                .build();
+
+        return Arrays.asList(purchase1, purchase2, purchase3);
+    }
+
+    List<PurchaseEntityDTO> purchasesListDTO() {
+        var purchase1 = PurchaseEntityDTO.builder()
+                .cpf("1234567890")
+                .purchaseDate(new Date())
+                .vehicleId(1)
+                .vehiclePrice(50000.0)
+                .isPaid(true)
+                .build();
+
+        var purchase2 = PurchaseEntityDTO.builder()
+                .cpf("0987654321")
+                .purchaseDate(new Date())
+                .vehicleId(2)
+                .vehiclePrice(30000.0)
+                .isPaid(false)
+                .build();
+
+        var purchase3 = PurchaseEntityDTO.builder()
                 .cpf("1112223334")
                 .purchaseDate(new Date())
                 .vehicleId(3)

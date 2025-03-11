@@ -1,10 +1,22 @@
+
 spring:
   application:
     name: sub_tech_challenge_seller_api_fase5
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-iugtbtykhkw0lt8h.us.auth0.com/
   data:
     mongodb:
       uri: mongodb://posfiap:posfiap2@localhost:27017
       database: vehicle
-
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 vehicle:
   url: "http://localhost:8080/api/vehicle"
+server:
+  port: 8081

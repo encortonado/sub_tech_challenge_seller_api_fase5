@@ -22,12 +22,6 @@ public class VehiclePurchaseController {
         this.vehiclePurchaseService = vehiclePurchaseService;
     }
 
-
-    @GetMapping
-    ResponseEntity<List<PurchaseEntityDTO>> listAllPurchases() {
-        return ResponseEntity.ok().body(vehiclePurchaseService.listSoldVehicles());
-    }
-
     @GetMapping("/status/{id}")
     ResponseEntity<PurchaseEntityDTO> followSale(@PathVariable("id") String id) {
         return ResponseEntity.ok().body(vehiclePurchaseService.findSaleById(id));
